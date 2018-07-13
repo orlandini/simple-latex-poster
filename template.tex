@@ -24,6 +24,7 @@
 \usepackage{microtype} %aligning and stuff
 \usepackage{exscale} %integral sign in poster
 \usepackage{tikz}
+\usepackage{mdframed}
 \usetikzlibrary{calc}
 
 % Portrait, A0 poster. Set scale as desired, but 1.3 gives easily readable text when printed.
@@ -148,13 +149,17 @@ and the matrices are defined as:
         
         On a last note regarding implementation choices, there is the matter of \emph{scaling}. The electromagnetic quantities present in a computation of the generalized eigenvalue problem obtained in \Cref{eq:fem-discretized-form} vary widely in magnitude. The $k_0$ factor, in the context of photonics, can easily reach orders of magnitude around $10^6$, while the cross-sectional area of waveguides such as optical fibers can be as small as $10^{-14}m^2$. In order to reduce the floating-point errors, \Cref{eq:fem-discretized-form} was scaled by the factor $k_0$, so the resulting eigenvalue of \Cref{eq:fem-discretized-form} is now $-n_{eff}^2$, given that the \emph{effective refractive index} is calculated by $n_{eff} = \beta/k_0$.
         \begin{figure}[hb]
-            \includegraphics[width=0.49\textwidth]{images/et2.png}%
-            \hspace{0.01\textwidth}%
-            \includegraphics[width=0.49\textwidth]{images/ez2.png}
-            \vspace{0.01\textwidth}
-            \includegraphics[width=0.49\textwidth]{images/et3.png}%
-            \hspace{0.01\textwidth}%
-            \includegraphics[width=0.49\textwidth]{images/ez3.png}
+        	\begin{mdframed}[backgroundcolor=bggrey]
+        		Ez \hfill Et
+        		
+	            \includegraphics[width=0.49\textwidth]{images/et2posterStepFiber.png}%
+	            \hspace{0.01\textwidth}%
+	            \includegraphics[width=0.49\textwidth]{images/ez2posterStepFiber.png}
+	            \vspace{0.01\textwidth}
+	            \includegraphics[width=0.49\textwidth]{images/et3posterStepFiber.png}%
+	            \hspace{0.01\textwidth}%
+	            \includegraphics[width=0.49\textwidth]{images/ez3posterStepFiber.png}
+	            \end{mdframed}
             \caption{BlaBlabla}
         \end{figure}
         \end{block}
@@ -172,16 +177,33 @@ and the matrices are defined as:
         \vfill
 
         \begin{block}{\boxnumber HP-ADAPTIVITY CAPABILITIES }
-            \begin{tikzpicture}%
-        		\node[anchor=south west, inner sep=0] (X) at (0,0){\includegraphics[height=1\linewidth]{images/holeyMesh.png}};%
-        		\begin{scope}[x={(X.south east)},y={(X.north west)}]%
-        		%% This makes all measurements with no units into fractions of the width
-        		%% and height of the graphic contained in the node.
-        		\draw[fill = white,fill opacity=0.8, text opacity=1] (0.05,0.075) rectangle (0.15,0.125) node[pos=.5] {$k=5$};
-        		\draw[fill = white,fill opacity=0.8, text opacity=1] (0.37,0.395) rectangle (0.47,0.445) node[pos=.5] {$k=4$};
-        		\draw[fill = white,fill opacity=0.8, text opacity=1] (0.65,0.675) rectangle (0.75,0.725) node[pos=.5] {$k=3$};
-        		\end{scope}%
-    	    \end{tikzpicture}
+        \begin{figure}
+        	\centering
+	            \begin{tikzpicture}%
+	        		\node[anchor=south west, inner sep=0] (X) at (0,0){\includegraphics[height=0.8\linewidth]{images/holeyMesh.png}};%
+	        		\begin{scope}[x={(X.south east)},y={(X.north west)}]%
+	        		%% This makes all measurements with no units into fractions of the width
+	        		%% and height of the graphic contained in the node.
+	        		\draw[fill = white,fill opacity=0.8, text opacity=1] (0.05,0.075) rectangle (0.15,0.125) node[pos=.5] {$k=5$};
+	        		\draw[fill = white,fill opacity=0.8, text opacity=1] (0.37,0.395) rectangle (0.47,0.445) node[pos=.5] {$k=4$};
+	        		\draw[fill = white,fill opacity=0.8, text opacity=1] (0.65,0.675) rectangle (0.75,0.725) node[pos=.5] {$k=3$};
+	        		\end{scope}%
+	    	    \end{tikzpicture}
+    	    \caption{Hello}
+    	\end{figure}    	
+
+    	\begin{figure}[hb]
+	    	\begin{mdframed}[backgroundcolor=bggrey]
+	            \includegraphics[width=0.49\textwidth]{images/et1posterHoley.png}%
+	            \hspace{0.01\textwidth}%
+	            \includegraphics[width=0.49\textwidth]{images/ez1posterHoley.png}
+	            \vspace{0.01\textwidth}
+	            \includegraphics[width=0.49\textwidth]{images/et2posterHoley.png}%
+	            \hspace{0.01\textwidth}%
+	            \includegraphics[width=0.49\textwidth]{images/ez2posterHoley.png}
+	        \end{mdframed}
+            \caption{BlaBlabla}
+        \end{figure}
             % \begin{figure}[ht]
             %     \centering
             %     \includegraphics[width=1\linewidth]{images/holeyMesh.png}
