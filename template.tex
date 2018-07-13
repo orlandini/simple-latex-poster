@@ -1,30 +1,37 @@
-\documentclass[final]{beamer} % beamer 3.10: do NOT use option hyperref={pdfpagelabels=false}!
-
+\documentclass[debug]{beamer} % beamer 3.10: do NOT use option hyperref={pdfpagelabels=false}! 
 %\documentclass[final,hyperref={pdfpagelabels=false}]{beamer} % beamer 3.07: get rid of beamer warnings
 
 
 \renewcommand*\oldstylenums[1]{{\firaoldstyle #1}}
 
-\mode<presentation>{\usetheme{dsmanchester}}
+\mode<presentation>{\usetheme{dsunicamp}}
 
 
 % Put any other packages or custom macros in here:
 \PassOptionsToPackage{main=english}{babel}
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}		% Codificacao do documento (convers\~{a}o autom\'{a}tica dos acentos)
-
-\usepackage[sfdefault]{FiraSans} %% option 'sfdefault' activates Fira Sans as the default text font
-%\usepackage{newtxsf}
 \usepackage[T1]{fontenc}
+\usepackage[backend=biber, isbn=false, doi=false,style=ieee,language=english]{biblatex}
+\renewcommand*{\bibfont}{\footnotesize}
+\bibliography{bibliography}
 
 
+%%%%%%%MATH STUFF
+\usepackage{fix-cm}% just to avoid some spurious messages
+\usepackage{amsmath}
 \usepackage{mathtools}
 \usepackage{bm}
+\usepackage{exscale} %integral sign in poster
+\usepackage{eulervm}
+%%%%%%%%%RANDOM STUFF
 \usepackage{cleveref} %cref, Cref
 \usepackage{microtype} %aligning and stuff
-\usepackage{exscale} %integral sign in poster
+%%%%%%%%%GRAPHICAL STUFF
 \usepackage{tikz}
 \usepackage{mdframed}
+\usepackage{subcaption} %subfigs
+\usepackage{graphicx}% http://ctan.org/pkg/graphicx
 \usetikzlibrary{calc}
 
 % Portrait, A0 poster. Set scale as desired, but 1.3 gives easily readable text when printed.
@@ -97,71 +104,59 @@
 
         \vfill
         \begin{block}{\boxnumber FEM FORMULATION}
-        Find non-trivial $\left(\beta^2,{e_t}, {e_z}\right) \in (\mathbb{C} \times [\mathbb{C}]^N \times [\mathbb{C}]^M)$ such that:
-\begin{equation}\label{eq:fem-discretized-form}
-  \begin{bmatrix}
-    A_{tt} & 0 \\
-    0      & 0
-  \end{bmatrix}
-  \begin{Bmatrix}
-    e_t \\
-    e_z
-  \end{Bmatrix}
-  = - \beta ^2
-  \begin{bmatrix}
-    B_{tt} & B_{tz} \\
-    B_{zt} & B_{zz}
-  \end{bmatrix}
-  \begin{Bmatrix}
-    e_t \\
-    e_z
-  \end{Bmatrix}
-  \text{,}
-\end{equation}
-and the matrices are defined as:
-\begin{align}
-  [A_{tt}]_{ij} &= \int_{\Omega}
-  \left[
-  \mu_{zz}^{-1}\left( \curlopt \bm{\varphi}_i \right) \cdot
-  \left( \curlopt \bm{\varphi}_j \right)
-  - k_0^2 \bm{\epsilon}_{xy} \bm{\varphi}_i\cdot \bm{\varphi}_j\right] d\Omega\text{,}\label{eq:fem-mat-1}\\
-  [B_{tt}]_{ij} &= \int_{\Omega}  \bm{\mu}_{xy^S}^{-1}\bm{\varphi}_i  \cdot
-  \bm{\varphi}_j\, d\Omega\text{,}\label{eq:fem-mat-2}\\
-  [B_{tz}]_{ij} &= \int_{\Omega}  \bm{\mu}_{xy^S}^{-1}\bm{\varphi}_i  \cdot
-  \gradopt \testhone_j\, d\Omega\text{,}\label{eq:fem-mat-3}\\
-  [B_{zt}]_{ij} &= \int_{\Omega}  \bm{\mu}_{xy^S}^{-1}\gradopt \testhone_i  \cdot
-  \bm{\varphi}_j
-  \, d\Omega\text{,}\label{eq:fem-mat-4}\\
-  [B_{zz}]_{ij} &= \int_{\Omega}
-  \left[
-  \bm{\mu}_r^{-1}\gradopt \testhone_i  \cdot
-  \gradopt \testhone_j
-  - k_0^2 \epsilon_{zz} \testhone_i \testhone_j\right] d\Omega\text{.}\label{eq:fem-mat-5}
-\end{align}
+        From \textcite{jin14}:
+	        Find non-trivial $\left(\beta^2,{e_t}, {e_z}\right) \in (\mathbb{C} \times [\mathbb{C}]^N \times [\mathbb{C}]^M)$ such that:
+			\begin{equation}
+				\renewcommand{\arraystretch}{1.5}%
+	  			 \scalebox{0.9}{% Scale
+					$\begin{multlined}\label{eq:fem-hcurl-disc-1}
+					    \int_\Omega\left\{\sum_{j}^Ne_{tj}\left[\mu_{zz}^{-1} \left( \nabla_t \times \testhcurl_j \right)\cdot \left( \nabla_t \times \testhcurl_i \right)^*- k_0^2 \bm{\epsilon}_{xy}\testhcurl_j\cdot\testhcurl_i^*\right]\right.\\
+					     +\left.\beta^2\sum_{l}^M e_{zk} \left[ \sum_{j}^Ne_{tj} \bm{\mu}_{xy^S}^{-1} \left( \nabla_t \testhone_k +\testhcurl_j \right)\cdot \left(\nabla_t \testhone_k +\testhcurl_i \right)^*-k_0^2\epsilon_{zz} \testhone_k\testhone_k^*\right]\right\}\mathrm{d}\Omega = 0,\\
+					     \forall \testhcurl_i \in B_{U_h}\,,\, \testhone_k \in B_{V_h}\text{,}
+					\end{multlined}$
+				}
+			\end{equation}%
+			where $B_{U_h}$ and $B_{V_h}$ denote the FEM basis for the finite-dimensional subspaces of $\hcurl{\Omega}$ and $\hone{\Omega}$, respectively.
         \end{block}
+
+        \vfill
         \begin{block}{\boxnumber EFFECTS OF GEOMETRICAL REPRESENTATION}
-        \begin{figure}[ht]
+        	\begin{figure}[ht]
             \centering
             \includegraphics[width=0.8\linewidth]{images/convergenceRates_k4_poster.png}
-            \caption{BlaBlabla}
-            \label{fig:test}
-        \end{figure}
+            \caption{Comparison of convergence rates for the real part of the effective index of a step-index optical fiber. The polynomial order $k=4$ was used in all three approximations. The geometry was described with elements obtained by linear mapping(blue curve), quadratic mapping(green curve) and exact mapping(red curve).}
+            \label{fig:convergence-step}
+        	\end{figure}
         
-        On a last note regarding implementation choices, there is the matter of \emph{scaling}. The electromagnetic quantities present in a computation of the generalized eigenvalue problem obtained in \Cref{eq:fem-discretized-form} vary widely in magnitude. The $k_0$ factor, in the context of photonics, can easily reach orders of magnitude around $10^6$, while the cross-sectional area of waveguides such as optical fibers can be as small as $10^{-14}m^2$. In order to reduce the floating-point errors, \Cref{eq:fem-discretized-form} was scaled by the factor $k_0$, so the resulting eigenvalue of \Cref{eq:fem-discretized-form} is now $-n_{eff}^2$, given that the \emph{effective refractive index} is calculated by $n_{eff} = \beta/k_0$.
-        \begin{figure}[hb]
-        	\begin{mdframed}[backgroundcolor=bggrey]
-        		Ez \hfill Et
-        		
-	            \includegraphics[width=0.49\textwidth]{images/et2posterStepFiber.png}%
-	            \hspace{0.01\textwidth}%
-	            \includegraphics[width=0.49\textwidth]{images/ez2posterStepFiber.png}
-	            \vspace{0.01\textwidth}
-	            \includegraphics[width=0.49\textwidth]{images/et3posterStepFiber.png}%
-	            \hspace{0.01\textwidth}%
-	            \includegraphics[width=0.49\textwidth]{images/ez3posterStepFiber.png}
-	            \end{mdframed}
-            \caption{BlaBlabla}
-        \end{figure}
+	        On a last note regarding implementation choices, there is the matter of \emph{scaling}. The electromagnetic quantities present in a computation of the generalized eigenvalue problem obtained in the discretization of \Cref{eq:fem-hcurl-disc-1} vary widely in magnitude. The $k_0$ factor, in the context of photonics, can easily reach orders of magnitude around $10^6$, while the cross-sectional area of waveguides such as optical fibers can be as small as $10^{-14}m^2$. In order to reduce the floating-point errors, \Cref{eq:fem-hcurl-disc-1} was scaled by the factor $k_0$, so the resulting eigenvalue of the algebraic problem is now $-n_{\text{\emph{eff}}}^2$, where $n_{\text{\emph{eff}}}$given that the \emph{effective refractive index} is calculated by $n_{\text{\emph{eff}}} = \beta/k_0$.
+
+
+	        \begin{figure}[hb]
+	        	\begin{mdframed}[backgroundcolor=bggrey]
+					\centering
+					\begin{subfigure}[b]{.4999\textwidth}
+						\centering
+						\caption*{$\displaystyle\bm{E}_t$}
+						\includegraphics[width=1\linewidth]{images/et2posterStepFiber.png}%
+					\end{subfigure}\hfill
+					\begin{subfigure}[b]{.4999\textwidth}
+						\centering
+						\caption*{$\displaystyle E_z$}
+						\includegraphics[width=1\linewidth]{images/ez2posterStepFiber.png}%
+					\end{subfigure}
+
+					\begin{subfigure}[b]{.4999\textwidth}
+						\centering
+						\includegraphics[width=1\linewidth]{images/et3posterStepFiber.png}%
+					\end{subfigure}\hfill
+					\begin{subfigure}[b]{.4999\textwidth}
+						\centering
+						\includegraphics[width=1\linewidth]{images/ez3posterStepFiber.png}%
+					\end{subfigure}
+				\end{mdframed}
+				\caption{Plot step}
+				\label{fig:plot-step}
+			\end{figure}
         \end{block}
 
         \vfill
@@ -177,43 +172,55 @@ and the matrices are defined as:
         \vfill
 
         \begin{block}{\boxnumber HP-ADAPTIVITY CAPABILITIES }
-        \begin{figure}
-        	\centering
-	            \begin{tikzpicture}%
-	        		\node[anchor=south west, inner sep=0] (X) at (0,0){\includegraphics[height=0.8\linewidth]{images/holeyMesh.png}};%
-	        		\begin{scope}[x={(X.south east)},y={(X.north west)}]%
-	        		%% This makes all measurements with no units into fractions of the width
-	        		%% and height of the graphic contained in the node.
-	        		\draw[fill = white,fill opacity=0.8, text opacity=1] (0.05,0.075) rectangle (0.15,0.125) node[pos=.5] {$k=5$};
-	        		\draw[fill = white,fill opacity=0.8, text opacity=1] (0.37,0.395) rectangle (0.47,0.445) node[pos=.5] {$k=4$};
-	        		\draw[fill = white,fill opacity=0.8, text opacity=1] (0.65,0.675) rectangle (0.75,0.725) node[pos=.5] {$k=3$};
-	        		\end{scope}%
-	    	    \end{tikzpicture}
-    	    \caption{Hello}
-    	\end{figure}    	
+	        \begin{figure}
+	        	\centering
+		            \begin{tikzpicture}%
+		        		\node[anchor=south west, inner sep=0] (X) at (0,0){\includegraphics[height=0.8\linewidth]{images/holeyMesh.png}};%
+		        		\begin{scope}[x={(X.south east)},y={(X.north west)}]%
+		        		%% This makes all measurements with no units into fractions of the width
+		        		%% and height of the graphic contained in the node.
+		        		\draw[fill = white,fill opacity=0.8, text opacity=1] (0.05,0.075) rectangle (0.15,0.125) node[pos=.5] {$k=5$};
+		        		\draw[fill = white,fill opacity=0.8, text opacity=1] (0.37,0.395) rectangle (0.47,0.445) node[pos=.5] {$k=4$};
+		        		\draw[fill = white,fill opacity=0.8, text opacity=1] (0.65,0.675) rectangle (0.75,0.725) node[pos=.5] {$k=3$};
+		        		\end{scope}%
+		    	    \end{tikzpicture}
+	    	    \caption{Mesh holey}
+	    	    \label{fig:mesh-holey}
+	    	\end{figure}    	
 
-    	\begin{figure}[hb]
-	    	\begin{mdframed}[backgroundcolor=bggrey]
-	            \includegraphics[width=0.49\textwidth]{images/et1posterHoley.png}%
-	            \hspace{0.01\textwidth}%
-	            \includegraphics[width=0.49\textwidth]{images/ez1posterHoley.png}
-	            \vspace{0.01\textwidth}
-	            \includegraphics[width=0.49\textwidth]{images/et2posterHoley.png}%
-	            \hspace{0.01\textwidth}%
-	            \includegraphics[width=0.49\textwidth]{images/ez2posterHoley.png}
-	        \end{mdframed}
-            \caption{BlaBlabla}
-        \end{figure}
-            % \begin{figure}[ht]
-            %     \centering
-            %     \includegraphics[width=1\linewidth]{images/holeyMesh.png}
-            %     \caption{BlaBlabla}
-            %     \label{fig:test2}
-            % \end{figure}
+
+			\begin{figure}[hb]
+	        	\begin{mdframed}[backgroundcolor=bggrey]
+					\centering
+					\begin{subfigure}[b]{.4999\textwidth}
+						\centering
+						\caption*{$\displaystyle\bm{E}_t$}
+						\includegraphics[width=1\linewidth]{images/et1posterHoley.png}%
+					\end{subfigure}\hfill
+					\begin{subfigure}[b]{.4999\textwidth}
+						\centering
+						\caption*{$\displaystyle E_z$}
+						\includegraphics[width=1\linewidth]{images/ez1posterHoley.png}%
+					\end{subfigure}
+
+					\begin{subfigure}[b]{.4999\textwidth}
+						\centering
+						\includegraphics[width=1\linewidth]{images/et2posterHoley.png}%
+					\end{subfigure}\hfill
+					\begin{subfigure}[b]{.4999\textwidth}
+						\centering
+						\includegraphics[width=1\linewidth]{images/ez2posterHoley.png}%
+					\end{subfigure}
+				\end{mdframed}
+				\caption{Picture of animals}
+				\label{fig:plot-holey}
+			\end{figure}
         \end{block}
 
         \vfill
-
+        \begin{block}{REFERENCES}
+        	\printbibliography
+        \end{block}
       } % end of parbox
     \end{column}
 

@@ -10,8 +10,8 @@ An example of how the poster looks is in `example/poster.pdf`.
 Usage
 ====
 
-* In a new folder copy or create links to `beamerposter.sty`, `beamerthemedsmanchester.sty` and the folder `logos`. Create a new copy of `template.tex` 
-* Replace the logos with those of your own university, research group, funding body, etc. (if you need a different number of logos then comment/uncomment the appropriate lines in `beamerthemedsmanchester.sty`).
+* In a new folder copy or create links to `beamerposter.sty`, `beamerthemedsunicamp.sty` and the folder `logos`. Create a new copy of `template.tex` 
+* Replace the logos with those of your own university, research group, funding body, etc. (if you need a different number of logos then comment/uncomment the appropriate lines in `beamerthemedsunicamp.sty`).
 * Start writing LaTeX code as normal inside `template.tex`.
 
 
@@ -32,4 +32,4 @@ The theme is based on ["beamer poster example 2"](http://www-i6.informatik.rwth-
 License
 ====
 
-`beamerposter.sty` is licensed under the GPL. `beamerthemedsmanchester.sty` and `template.tex` are under creative commons.
+`beamerposter.sty` is licensed under the GPL. `beamerthemedsunicamp.sty` and `template.tex` are under creative commons.
