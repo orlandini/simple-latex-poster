@@ -85,12 +85,12 @@
 
 % Start of the body:
 \begin{frame}
-	\vspace{-2em}
+	\vspace{-1em}
     \centering
     \noindent\begin{minipage}[t]{0.45\textwidth}
       \begin{block}{\boxnumber MOTIVATION}
         	\begin{itshape}   % italic abstract
-	          	The design of photonic waveguides requires a high degree of precision on the dispersion parameters. Such requirement has led the Computational Electromagnetics(CE) community to seek a diversity of numerical methods, such as the \emph{pseudospectral methods}. In this work it is shown that the Finite Element Method(FEM) is capable of achieving that precision in an efficient way if high-order elements, not very popular in the CE community, are used. The conditions for benefiting from the higher convergence rates are exposed and real-world scenario results are presented exemplifying the use of \emph{hp}-adaptive finite elements.
+        		High precision approximation of dispersion parameters is a major concern in the design of photonic waveguides and the Computational Electromagnetics(CE) community has sought many different numerical methods in order to achieve this requirement. In the present work, a high-order Finite Element Method(FEM) scheme is introduced as an efficient technique presenting high convergence rates and being able to deal with curved waveguides and lossy inhomogeneous media with transverse anisotropy. The $\hcurl{\Omega}$-conforming elements used in the scheme are a hierarchical construction of the Nédélec elements of the first kind, implemented in the \texttt{NeoPZ} framework. The importance of using non-linear mapped elements when using high-order elements is exposed and real-world scenario results are presented. Finally, the hierarchical construction of the elements is exploited in an example of how \emph{hp}-adaptive finite elements can significantly reduce the number of equations while still achieving high precision results.
         	\end{itshape}
         \end{block}
 
@@ -111,13 +111,13 @@
 			\end{equation}%
 			where $B_{U_h}$ and $B_{V_h}$ denote the FEM basis for the finite-dimensional subspaces of $\hcurl{\Omega}$ and $\hone{\Omega}$, respectively.
 
-			The $\hcurl{\Omega}$-conforming elements used in this work are the Nédélec elements of the first kind \textcite{nedelec80} and were constructed in the NeoPZ framework in a hierarchical way.
+			The $\hcurl{\Omega}$-conforming elements used in this work are the Nédélec elements of the first kind\parencite{nedelec80} and were constructed in the NeoPZ framework in a hierarchical manner.
         \end{block}
 
         \vfill
-        \begin{block}{\boxnumber EFFECTS OF GEOMETRICAL REPRESENTATION}
+        \begin{block}{\boxnumber EFFECTS OF GEOMETRICAL REPRESENTATION ON CONVERGENCE}
         	In order to benefit from the high-order elements, non-linear mapped elements are essential when dealing with curved geometries. \Cref{fig:convergence-step} compares the convergence rate of the effective index $n_{\text{\emph{eff}}}$ for a step-index optical fiber with polynomial order $k=4$, using three different types of mapped elements.
-
+        	\vspace*{1ex}
 
         	\begin{figure}[ht]
 	            \centering
@@ -150,15 +150,15 @@
 						\includegraphics[width=1\linewidth]{images/ez3posterStepFiber.png}%
 					\end{subfigure}
 				\end{mdframed}
-				\caption{The first four approximated LP modes for a step-index optical fiber with $r_{\text{\emph{core}}}=8\mu m$ and refractive indexes $n_1 =1.4457$(core) and $n_2 =1.4378$(cladding). The fiber is analyzed for $\lambda_0=1.55\mu m$. On the left, the Line Integral Convolution of the transversal component of the electric field is shown, and on the right its correspondent longitudinal component.}
+				\caption{The first two approximated LP modes for a step-index optical fiber with $r_{\text{\emph{core}}}=8\mu m$ and refractive indexes $n_1 =1.4457$(core) and $n_2 =1.4378$(cladding). The fiber is analyzed for $\lambda_0=1.55\mu m$. On the left, the Line Integral Convolution of the transversal component of the electric field is shown, and on the right its correspondent longitudinal component.}
 				\label{fig:plot-step}
 			\end{figure}
 		\end{block}
     \end{minipage}\hspace{2cm}% <--- space
     \begin{minipage}[t]{0.45\textwidth}
         \begin{block}{\boxnumber HP-ADAPTIVITY CAPABILITIES }
-        The developed basis functions, due to their hierarchical construction, can be easily integrated in the \emph{hp}-algorithms of the \texttt{NeoPZ} framework\parencite{diazcalle15}. In order to demonstrate its efficiency, the microstructured fiber presented in \parencite{chiang11} was analyzed. \Cref{fig:mesh-holey} shows a \emph{hp}-adaptive mesh in which the refinements were performed upon observation of the solution obtained with a fine mesh and \Cref{fig:plot-holey} shows the electric field plots obtained with the mesh of \Cref{fig:mesh-holey}.
-
+        The developed basis functions, due to their hierarchical construction, can be easily integrated in the \emph{hp}-algorithms of the \texttt{NeoPZ} framework\parencite{diazcalle15}. In order to demonstrate its efficiency, the microstructured fiber presented in \parencite{chiang11} was analyzed. \Cref{fig:mesh-holey} shows a \emph{hp}-adaptive mesh in which the refinements were performed upon observation of the solution obtained with a fine mesh.
+        \vspace*{1ex}
 
 	        \begin{figure}
 	        	\centering
@@ -175,6 +175,23 @@
 	    	    \caption{The Finite Element mesh of the microstructured fiber with six air-holes. The waveguide has a hole diameter of $d = 5\,\mu m$ and a hole pitch of $\Lambda=6.75\,\mu m$. The computational domain takes advantage of the symmetry of the desired fields and is a square with side $l=W+d_{pml}$, with $W=15.75\,\mu m$ and $d_{pml} = 2\, \mu m$. The elements have varying polynomial order from $k=3$ to $k=5$, and the mesh was refined on the region near the holes.}
 	    	    \label{fig:mesh-holey}
 	    	\end{figure}    	
+			\Cref{table:res-holey-conv} shows the significant reduction on the number of equations when using \emph{p} and \emph{hp}-refinement. While the number of equations is still higher than the ones obtained with the pseudospectral method in \textcite{chiang11}, the sparsity of the FEM matrices, allied with a solver that supports \emph{compressed row storage}(CRS) as \texttt{SLEPc}\parencite{slepc05} makes the FEM approach competitive in terms of memory and computational time. Finally, \Cref{fig:plot-holey} shows the electric field plots obtained with the mesh of \Cref{fig:mesh-holey}.
+
+			\begin{table}[h]
+				\caption{Effect of \emph{hp} mesh refinement on the number of equations and relative error of the approximated propagation constant in the microstructured fiber. In the example without refinement, $k=5$ was used for all elements. On the other two simulations, $3\leq k \leq 5$ was used, as shown in \Cref{fig:mesh-holey}.}
+				\label{table:res-holey-conv}
+				\begin{center}
+					\begin{tabular}{lcc}
+					 \toprule
+					   & $n_{\text{\emph{eq}}}$    &    $e_{\text{\emph{rel}}}$   \\
+					 \midrule
+					 ---       & 285500 & $3.88420\times 10^{-13}$ \\
+					 \emph{p}  & 181992 & $3.38410\times 10^{-13}$ \\
+					 \emph{hp} & 130476 & $9.86280\times 10^{-13}$ \\
+					 \bottomrule
+					\end{tabular}
+				\end{center}
+			\end{table}
 
 			\begin{figure}[hb]
 	        	\begin{mdframed}[backgroundcolor=bggrey]
@@ -202,30 +219,12 @@
 				\caption{Electric field plot of the sixth(up) and third(down) non-degenerated electromagnetic modes of the microstructured fiber. On the left, the Line Integral Convolution of the transversal component of the electric field is shown, and on the right its correspondent longitudinal component.}
 				\label{fig:plot-holey}
 			\end{figure}
-
-			\Cref{table:res-holey-conv} shows the drastic reduction on the number of equations when using \emph{p} and \emph{hp}-refinement. While the number of equations is still higher than the ones obtained with the pseudospectral method in \textcite{chiang11}, the sparsity of the FEM matrices, allied with a solver that works with \emph{compressed row storage}(CRS) as \texttt{SLEPc}\parencite{slepc05} makes the FEM approach competitive in terms of memory and computational time.
-
-			\begin{table}[h]
-				\caption{Effect of \emph{hp} mesh refinement on the number of equations and relative error of the approximated propagation constant in the microstructured fiber. In the example without refinement, $k=5$ was used for all elements. On the other two simulations, $3\leq k \leq 5$ was used, as shown in \Cref{fig:mesh-holey}.}
-				\label{table:res-holey-conv}
-				\begin{center}
-					\begin{tabular}{lcc}
-					 \toprule
-					   & $n_{\text{\emph{eq}}}$    &    $e_{\text{\emph{rel}}}$   \\
-					 \midrule
-					 ---       & 285500 & $3.88420\times 10^{-13}$ \\
-					 \emph{p}  & 181992 & $3.38410\times 10^{-13}$ \\
-					 \emph{hp} & 130476 & $9.86280\times 10^{-13}$ \\
-					 \bottomrule
-					\end{tabular}
-				\end{center}
-			\end{table}
         \end{block}
         \vfill
         \begin{block}{REFERENCES}
         	\printbibliography
         \end{block}
-        \vfill
+        %\vfill
     \end{minipage}
 \end{frame}
 
