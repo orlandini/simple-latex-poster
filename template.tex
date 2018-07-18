@@ -171,8 +171,9 @@
 		        		\draw[fill = white,fill opacity=0.8, text opacity=1] (0.37,0.395) rectangle (0.47,0.445) node[pos=.5] {$k=4$};
 		        		\draw[fill = white,fill opacity=0.8, text opacity=1] (0.65,0.675) rectangle (0.75,0.725) node[pos=.5] {$k=3$};
 		        		\end{scope}%
+		        		\node[anchor=south west, inner sep=0] (fig2) at (21,7.5){\includegraphics[height=0.25\linewidth]{images/holeyMeshCrop.png}};%
 		    	    \end{tikzpicture}
-	    	    \caption{The Finite Element mesh of the microstructured fiber with six air-holes. The waveguide has a hole diameter of $d = 5\,\mu m$ and a hole pitch of $\Lambda=6.75\,\mu m$. The computational domain takes advantage of the symmetry of the desired fields and is a square with side $l=W+d_{pml}$, with $W=15.75\,\mu m$ and $d_{pml} = 2\, \mu m$. The elements have varying polynomial order from $k=3$ to $k=5$, and the mesh was refined on the region near the holes.}
+	    	    \caption{The Finite Element mesh of the microstructured fiber with six air-holes. The waveguide has a hole diameter of $d = 5\,\mu m$ and a hole pitch of $\Lambda=6.75\,\mu m$. The computational domain takes advantage of the symmetry of the desired fields and is a square with side $l=W+d_{pml}$, with $W=15.75\,\mu m$ and $d_{pml} = 2\, \mu m$. The elements have varying polynomial order from $k=3$ to $k=5$, and the mesh was refined on the region near the holes. The detail on the right highlights the presence of hanging nodes in the mesh.}
 	    	    \label{fig:mesh-holey}
 	    	\end{figure}    	
 			\Cref{table:res-holey-conv} shows the significant reduction on the number of equations when using \emph{p} and \emph{hp}-refinement. While the number of equations is still higher than the ones obtained with the pseudospectral method in \textcite{chiang11}, the sparsity of the FEM matrices, allied with a solver that supports \emph{compressed row storage}(CRS) as \texttt{SLEPc}\parencite{slepc05} makes the FEM approach competitive in terms of memory and computational time. Finally, \Cref{fig:plot-holey} shows the electric field plots obtained with the mesh of \Cref{fig:mesh-holey}.
