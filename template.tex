@@ -71,7 +71,7 @@
 \DeclareMathOperator{\gradopt}{\nabla_t}
 
 % Define the header information
-\title{DEVELOPMENT OF HIGH-ORDER\\ \vspace{0.3em} \texorpdfstring{H(CURL,$\Omega$)}{H(CURL,OMEGA)}-CONFORMING APPROXIMATION SPACES FOR PHOTONIC WAVEGUIDE ANALYSIS}
+\title{DEVELOPMENT OF HIGH-ORDER\\ \vspace{0.3em} \texorpdfstring{H(CURL;$\Omega$)}{H(CURL;OMEGA)}-CONFORMING APPROXIMATION SPACES FOR PHOTONIC WAVEGUIDE ANALYSIS}
 % \title{Title \\ \vspace{0.3em} second line of title}
 \author{Francisco T. Orlandini\texorpdfstring{\textsuperscript{1}}{ }, Hugo E. H. Figueroa\texorpdfstring{\textsuperscript{1}}{ } and Philippe R. B. Devloo\texorpdfstring{\textsuperscript{2}}{ }}
 \institute{\texorpdfstring{\textsuperscript{1}}{ }School of Electrical and Computer Engineering, State University of Campinas, Brazil\\
@@ -96,7 +96,7 @@
         \end{block}
 
         \vfill
-        \begin{block}{\boxnumber FEM FORMULATION AND THE \texorpdfstring{H(CURL,$\Omega$)}{H(CURL,OMEGA)}-CONFORMING ELEMENTS}
+        \begin{block}{\boxnumber FEM FORMULATION AND THE \texorpdfstring{H(CURL;$\Omega$)}{H(CURL;OMEGA)}-CONFORMING ELEMENTS}
         The formulation used in this work performs modal analysis on the cross-section $\Omega$ of a waveguide for a given angular frequency $\omega$, using $\hcurl{\Omega}$ and $\hone{\Omega}$-conforming elements for the transverse and longitudinal components of the electric field, respectively. It is valid for a domain composed of materials presenting at most transverse-anisotropy. From \textcite{jin14}:
 
 	        Find non-trivial $\left(\beta^2,{e_t}, {e_z}\right) \in (\mathbb{C} \times [\mathbb{C}]^N \times [\mathbb{C}]^M)$ such that:
@@ -165,7 +165,7 @@
     \end{minipage}\hspace{2cm}% <--- space
     \begin{minipage}[t]{0.45\textwidth}
         \begin{block}{\boxnumber HP-ADAPTIVITY CAPABILITIES }
-        The developed basis functions, due to their hierarchical construction, can be easily integrated in the \emph{hp}-algorithms of the \texttt{NeoPZ} framework\parencite{diazcalle15}. In order to demonstrate its efficiency, the microstructured fiber presented in \parencite{chiang11} was analyzed. \Cref{fig:mesh-holey} shows a \emph{hp}-adaptive mesh in which the refinements were performed upon observation of the solution obtained with a fine mesh.
+        The developed basis functions, due to their hierarchical construction, can be easily integrated in the \emph{hp}-algorithms of the \texttt{NeoPZ} framework\parencite{diazcalle15}. In order to demonstrate its efficiency, the microstructured fiber presented in \parencite{chiang11} was analyzed. \Cref{fig:mesh-holey} shows an \emph{hp}-adaptive mesh in which the refinements were performed upon observation of the solution obtained with a fine mesh.
         \vspace*{1ex}
 
 	        \begin{figure}
@@ -182,7 +182,7 @@
 		        		\node[anchor=south west, inner sep=0] (fig2) at (21,7.5){\includegraphics[height=0.25\linewidth]{images/holeyMeshCrop.png}};%
 		        		\node[anchor=south west, inner sep=0] (fig3) at (0.1,22){\includegraphics[height=0.25\linewidth]{images/holeyGeo.png}};%
 		    	    \end{tikzpicture}
-	    	    \caption{On the upper left, the cross-section(including the \emph{perfectly matched layers}) of the microstructured fiber with six air-holes. The waveguide has a hole diameter of $d = 5\,\mu m$ and a hole pitch of $\Lambda=6.75\,\mu m$. On the center, the FE mesh of the computational domain, which takes advantage of the symmetry of the desired fields, thus is a square with side $l=W+d_{pml}$, with $W=15.75\,\mu m$ and $d_{pml} = 2\, \mu m$. The elements have varying polynomial order from $k=3$ to $k=5$, and the mesh was refined on the region near the holes. The detail on the right highlights the presence of hanging nodes in the mesh.}
+	    	    \caption{On the upper left, the cross-section (including the \emph{perfectly matched layers}) of the microstructured fiber with six air-holes. The waveguide has a hole diameter of $d = 5\,\mu m$ and a hole pitch of $\Lambda=6.75\,\mu m$. On the center, the FE mesh of the computational domain, which takes advantage of the symmetry of the desired fields, thus is a square with side $l=W+d_{pml}$, with $W=15.75\,\mu m$ and $d_{pml} = 2\, \mu m$. The elements have varying polynomial order from $k=3$ to $k=5$, and the mesh was refined on the region near the holes. The detail on the right highlights the presence of hanging nodes in the mesh.}
 	    	    \label{fig:mesh-holey}
 	    	\end{figure}    	
 			\Cref{table:res-holey-conv} shows the significant reduction on the number of equations when using \emph{p} and \emph{hp}-refinement. While the number of equations is still higher than the ones obtained with the pseudospectral method in \textcite{chiang11}, the sparsity of the FEM matrices, allied with a solver that supports \emph{Compressed Row Storage} (CRS) as \texttt{SLEPc}\parencite{slepc05} makes the FEM approach competitive in terms of memory and computational time. Finally, \Cref{fig:plot-holey} shows the electric field plots obtained with the mesh of \Cref{fig:mesh-holey}.
